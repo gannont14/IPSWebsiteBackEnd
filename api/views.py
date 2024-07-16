@@ -5,8 +5,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import api_view, parser_classes
 
 
-from .models import Service
-from .serializers import ServiceSerializer
+from .models import Service, Photo
+from .serializers import ServiceSerializer, PhotoSerializer
 
 
 # Create your views here.
@@ -28,6 +28,23 @@ def getServices(request):
     
     elif request.method == 'POST':
         serializer = ServiceSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+# View to collect all of the photos for the photo gallery
+@api_view(['GET', 'POST'])
+@parser_classes([MultiPartParser, FormParser])
+def getPhotos(request):
+    if request.method == 'GET':
+        photos = Photo.objects.all()
+        serializer = PhotoSerializer(photos, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = PhotoSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

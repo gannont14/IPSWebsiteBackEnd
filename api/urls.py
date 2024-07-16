@@ -8,6 +8,7 @@ from .models import Service
 urlpatterns = [
     path('', views.getRoutes, name="routes"),
     path('api/services', views.getServices, name="services"),
+    path('api/photos', views.getPhotos, name="photos"),
 ]
 
 if settings.DEBUG:
