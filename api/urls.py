@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.getRoutes, name="routes"),
     path('api/services', views.getServices, name="services"),
     path('api/photos', views.getPhotos, name="photos"),
+    path('api/aboutMainContent', views.getAboutMainContent, name="aboutMainContent")
 ]
 
 if settings.DEBUG:
