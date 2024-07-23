@@ -28,3 +28,31 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.description
+
+class AboutMainContent(models.Model):
+    # title, subheader, main body content, image
+    
+    # text fields
+    title = models.TextField(null=True, blank=True)
+    subheader = models.TextField(null=True, blank=True)
+    mainBodyContent = models.TextField(null=True, blank=True)
+
+    # image field
+    image = models.ImageField(upload_to='service_images/', null=True, blank=True)
+
+    # timestamp fields
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class BackgroundImage(models.Model):
+    # actual image? wont work for videos if i were to guess
+    image = models.ImageField(upload_to='service_images/', null=True, blank=True)
+
+    # video = models.Mp4Field()
+    # alt description for accessibility
+    altDescription = models.TextField(null=True, blank=True)
+    
+    # time stamp fields
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
