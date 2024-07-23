@@ -5,8 +5,8 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import api_view, parser_classes
 
 
-from .models import Service, Photo
-from .serializers import ServiceSerializer, PhotoSerializer
+from .models import Service, Photo, AboutMainContent
+from .serializers import ServiceSerializer, PhotoSerializer, AboutMainContentserializer
 
 
 # Create your views here.
@@ -74,3 +74,43 @@ def getPhotos(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
+def getAboutMainContent(request):
+    if request.method == 'GET':
+        content = AboutMainContent.objects.all()
+        serializer = AboutMainContentserializer(content, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        serializer = AboutMainContentserializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method in ['PUT', 'PATCH']:
+        itemId = request.data.get('id')
+        if not itemId:
+            return Response({'error': 'Item id not present'}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            item = AboutMainContent.object.get(id=itemId)
+        except AboutMainContent.DoesNotExist:
+            return Response({'error': 'Item id not present'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = AboutMainContentserializer(item, data=request.data, partial=(request.method == 'PATCH'))
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'error': 'Item not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
