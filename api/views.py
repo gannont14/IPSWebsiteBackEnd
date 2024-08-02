@@ -4,6 +4,12 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import api_view, parser_classes
 
+import json
+
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 from .models import Service, Photo, AboutMainContent
 from .serializers import ServiceSerializer, PhotoSerializer, AboutMainContentserializer
@@ -113,4 +119,33 @@ def getAboutMainContent(request):
 
 
 
+# login view for auth
+    
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'failure'}, status=403)
+    return JsonResponse({'status': 'failure'}, status=405)
 
+
+# view to logout
+@csrf_exempt
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'fail', 'message': 'Invalid request'}, status=400)
+
+# checking auth
+def check_authentication(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'status': 'authenticated'})
+    return JsonResponse({'status': 'not_authenticated'})
