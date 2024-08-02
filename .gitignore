@@ -2,6 +2,7 @@
 __pycache__/
 **/__pycache__/
 *.pyc
+*.pyo
 api/__pycache__/
 **/api/__pycache__/
 IPSWebBackend/__pycache__/
