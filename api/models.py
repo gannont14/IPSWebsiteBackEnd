@@ -6,6 +6,7 @@ from django.db import models
 class Service(models.Model):
     title = models.TextField(null=True, blank=True)
     body = models.TextField(null=True, blank=True)
+    extendedBody = models.TextField(null=True, blank= True)
     image = models.ImageField(upload_to='service_images/', null=True, blank=True)
 
     updated = models.DateTimeField(auto_now=True)
