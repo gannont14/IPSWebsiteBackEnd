@@ -9,3 +9,5 @@ IPSWebBackend/__pycache__/
 **/IPSWebBackend/__pycache__/
 
 node_modules
+api/migrations/
+media/
