@@ -12,7 +12,7 @@ from .models import Service
 
 urlpatterns = [
 
-    path('api/services', views.getServices, name="services"),                            
+    path('api/services/', views.getServices, name="services"),                            
     path('api/services/modify', views.updateServices, name="updateServices"),
 
     path('api/photos', views.getPhotos, name="photos"),
