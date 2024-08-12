@@ -61,7 +61,6 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'https://ipswebsitebackend.onrender.com',
-    'ipswebsitebackend.onrender.com',
     'http://ipswebsitebackend.onrender.com',
 ]
 
