@@ -2,13 +2,15 @@ from rest_framework import status
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from rest_framework.decorators import api_view, parser_classes
+from rest_framework.decorators import api_view, parser_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
 
 import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 
 from .models import Service, Photo, AboutMainContent
@@ -17,14 +19,8 @@ from .serializers import ServiceSerializer, PhotoSerializer, AboutMainContentser
 
 # Create your views here.
 
-# testing endpoint, not used for anything
 @api_view(['GET'])
-def getRoutes(request):
-    return Response('TestApi')
-
-# currently just a get and post available
-@api_view(['GET', 'POST', 'PUT', 'PATCH'])
-# used for uploading images, as well as parsing JSON request to put and patch requests
+# available to all users, does not require token to fetch information
 @parser_classes([MultiPartParser, FormParser, JSONParser])
 def getServices(request):
     if request.method == 'GET':
@@ -32,7 +28,27 @@ def getServices(request):
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data)
     
-    elif request.method == 'POST':
+@api_view(['GET'])
+def getPhotos(request):
+    if request.method == 'GET':
+        photos = Photo.objects.all()
+        serializer = PhotoSerializer(photos, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getAboutMainContent(request):
+    if request.method == 'GET':
+        content = AboutMainContent.objects.all()
+        serializer = AboutMainContentserializer(content, many=True)
+        return Response(serializer.data)
+
+# Requires user to be authorized to update information
+@api_view(['PATCH', 'PUT', 'POST'])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
+@permission_classes([IsAuthenticated])
+def updateServices(request):
+    if request.method == 'POST':
         serializer = ServiceSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
@@ -53,14 +69,11 @@ def getServices(request):
 
 
 # View to collect all of the photos for the photo gallery
-@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+@api_view(['POST', 'PUT', 'PATCH'])
 @parser_classes([MultiPartParser, FormParser, JSONParser])
-def getPhotos(request):
-    if request.method == 'GET':
-        photos = Photo.objects.all()
-        serializer = PhotoSerializer(photos, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
+@permission_classes([IsAuthenticated])
+def updatePhotos(request):
+    if request.method == 'POST':
         serializer = PhotoSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
@@ -83,15 +96,11 @@ def getPhotos(request):
 
 
 
-@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+@api_view(['POST', 'PUT', 'PATCH'])
 @parser_classes([MultiPartParser, FormParser, JSONParser])
-def getAboutMainContent(request):
-    if request.method == 'GET':
-        content = AboutMainContent.objects.all()
-        serializer = AboutMainContentserializer(content, many=True)
-        return Response(serializer.data)
-    
-    elif request.method == 'POST':
+@permission_classes([IsAuthenticated])
+def updateAboutMainContent(request):
+    if request.method == 'POST':
         serializer = AboutMainContentserializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
@@ -113,39 +122,3 @@ def getAboutMainContent(request):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({'error': 'Item not found'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-
-
-
-# login view for auth
-    
-@csrf_exempt
-def login_view(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        username = data.get('username')
-        password = data.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({'status': 'success'})
-        else:
-            return JsonResponse({'status': 'failure'}, status=403)
-    return JsonResponse({'status': 'failure'}, status=405)
-
-
-# view to logout
-@csrf_exempt
-def logout_view(request):
-    if request.method == 'POST':
-        logout(request)
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'fail', 'message': 'Invalid request'}, status=400)
-
-# checking auth
-def check_authentication(request):
-    if request.user.is_authenticated:
-        return JsonResponse({'status': 'authenticated'})
-    return JsonResponse({'status': 'not_authenticated'})

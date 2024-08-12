@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from rest_framework_simplejwt import views as jwt_views
 
 
 
@@ -10,12 +11,22 @@ from . import views
 from .models import Service
 
 urlpatterns = [
-    path('', views.getRoutes, name="routes"),
-    path('api/services', views.getServices, name="services"),
+
+    path('api/services', views.getServices, name="services"),                            
+    path('api/services/modify', views.updateServices, name="updateServices"),
+
     path('api/photos', views.getPhotos, name="photos"),
+    path('api/photos/modify', views.updatePhotos, name="updatePhotos"),
+
     path('api/aboutMainContent', views.getAboutMainContent, name="aboutMainContent"),
-    path('api/check_authentication', views.check_authentication, name="check_authentication"),
-    path('api/login',  views.login_view, name='login_view')
+    path('api/aboutMainContent/modify', views.updateAboutMainContent, name="updateMainContent"),
+    
+    path('token/', 
+          jwt_views.TokenObtainPairView.as_view(), 
+          name ='token_obtain_pair'),
+     path('token/refresh/', 
+          jwt_views.TokenRefreshView.as_view(), 
+          name ='token_refresh')
 ]
 
 if settings.DEBUG:
