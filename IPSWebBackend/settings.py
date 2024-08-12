@@ -28,7 +28,10 @@ SECRET_KEY = 'django-insecure-bao*j_g*w)cu$-m0ma!+s9*6!r!r+c$#8swfpjeut097*=394-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'ipswebsitebackend.onrender.com'
+]
+
 
 # used for media files (images for database)
 MEDIA_URL = '/media/'
