@@ -20,6 +20,7 @@ urlpatterns = [
 
     path('api/aboutMainContent', views.getAboutMainContent, name="aboutMainContent"),
     path('api/aboutMainContent/modify', views.updateAboutMainContent, name="updateMainContent"),
+    path('api/aboutMainContent/<int:itemId>/modify', views.updateAboutMainContent, name="updateMainContent"),
     
     path('token/', 
           jwt_views.TokenObtainPairView.as_view(), 
