@@ -19,3 +19,13 @@ in psql shell type "\i FILE_PATH"
 
 run in django
 python manage.py migrate
+
+
+
+create .env file in root of project, past the following 
+    # PostgreSQL Database Configuration
+    DB_NAME=ipsdatabase
+    DB_USER=postgres
+    DB_PASSWORD=postgres
+    DB_HOST=localhost
+    DB_PORT=5432
