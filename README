@@ -1,0 +1,21 @@
+Updating backend to postgresql
+
+download postgresql from online
+
+open psql shell
+
+create new file with .sql extension paste the following
+
+    CREATE DATABASE IPSDATABASE;
+    CREATE USER postgres WITH PASSWORD  'postgres';
+    ALTER ROLE postgres SET client_encoding TO 'utf8';
+    ALTER ROLE postgres SET default_transaction_isolation TO 'read committed';
+    ALTER ROLE postgres SET timezone TO 'UTC';
+    GRANT ALL PRIVILEGES ON DATABASE IPSDATABASE TO postgres;
+
+copy file path
+
+in psql shell type "\i FILE_PATH"
+
+run in django
+python manage.py migrate
