@@ -15,6 +15,10 @@ import os
 
 from datetime import timedelta
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,7 +33,8 @@ SECRET_KEY = 'django-insecure-bao*j_g*w)cu$-m0ma!+s9*6!r!r+c$#8swfpjeut097*=394-
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'ipswebsitebackend.onrender.com'
+    'ipswebsitebackend.onrender.com',
+    '127.0.0.1'
 ]
 
 
@@ -115,10 +120,21 @@ WSGI_APPLICATION = 'IPSWebBackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),       # Database name
+        'USER': os.getenv('DB_USER'),       # Database user
+        'PASSWORD': os.getenv('DB_PASSWORD'),  # Database password
+        'HOST': os.getenv('DB_HOST'),       # Database host
+        'PORT': os.getenv('DB_PORT'),       # Database port
     }
 }
 
