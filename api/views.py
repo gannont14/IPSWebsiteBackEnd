@@ -27,7 +27,19 @@ def getServices(request):
         services = Service.objects.all()
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data)
+
+@api_view(['GET'])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
+def getServiceById(request, serviceId):
+    if request.method == 'GET':
+        try:
+            service = Service.objects.get(serviceId=serviceId)
+            serializer = ServiceSerializer(service)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Service.DoesNotExist:
+            return Response({"error": "Service not found"}, status=status.HTTP_404_NOT_FOUND)
     
+
 @api_view(['GET'])
 def getPhotos(request):
     if request.method == 'GET':
