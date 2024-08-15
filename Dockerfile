@@ -17,6 +17,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . /app/
 
+RUN python manage.py collectstatic --noinput
+
 # Expose the port the app runs on
 EXPOSE 8080
 
