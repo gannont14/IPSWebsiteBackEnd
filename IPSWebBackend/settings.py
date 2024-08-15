@@ -17,6 +17,8 @@ from datetime import timedelta
 
 from dotenv import load_dotenv
 
+import dj_database_url
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,14 +130,20 @@ WSGI_APPLICATION = 'IPSWebBackend.wsgi.application'
 # }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),       # Database name
-        'USER': os.getenv('DB_USER'),       # Database user
-        'PASSWORD': os.getenv('DB_PASSWORD'),  # Database password
-        'HOST': os.getenv('DB_HOST'),       # Database host
-        'PORT': os.getenv('DB_PORT'),       # Database port
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': os.getenv('HOSTED_DB_NAME'),       # Database name
+    #     'USER': os.getenv('HOSTED_DB_USER'),       # Database user
+    #     'PASSWORD': os.getenv('HOSTED_DB_PASSWORD'),  # Database password
+    #     'HOST': os.getenv('HOSTED_DB_HOST'),       # Database host
+    #     'PORT': os.getenv('HOSTED_DB_PORT', 5432),       # Database port
+    # }
+
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://ipswebsitedatabase_user:jXFqm0OYY2C4J5e9bMo6dsfITXeRxr2N@dpg-cqv10dij1k6c73do6hl0-a.oregon-postgres.render.com/ipswebsitedatabase',
+        conn_max_age=600
+    )
 }
 
 

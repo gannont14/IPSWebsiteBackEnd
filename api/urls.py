@@ -12,7 +12,8 @@ from .models import Service
 
 urlpatterns = [
 
-    path('api/services/', views.getServices, name="services"),                            
+    path('api/services/', views.getServices, name="services"),
+    path('api/services/<str:serviceId>/', views.getServiceById, name="get_service_by_id"),                            
     path('api/services/modify', views.updateServices, name="updateServices"),
 
     path('api/photos', views.getPhotos, name="photos"),
