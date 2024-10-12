@@ -19,6 +19,7 @@ from django.urls import path, include
 
 from django.conf import settings
 
+from django.conf.urls.static import static
 # not the right file to upload url paths to, use url.py in the api folder
 
 urlpatterns = [
