@@ -134,13 +134,23 @@ DATABASES = {
     #     'USER': os.getenv('HOSTED_DB_USER'),       # Database user
     #     'PASSWORD': os.getenv('HOSTED_DB_PASSWORD'),  # Database password
     #     'HOST': os.getenv('HOSTED_DB_HOST'),       # Database host
-    #     'PORT': os.getenv('HOSTED_DB_PORT', 5432),       # Database port
+    #     'PORT':  5432,       # Database port
     # }
-
+    #
+    # 'default': dj_database_url.config(
+    #     # Replace this value with your local database's connection string.
+    #     default='postgresql://ipswebsitedatabase_user:jXFqm0OYY2C4J5e9bMo6dsfITXeRxr2N@dpg-cqv10dij1k6c73do6hl0-a.oregon-postgres.render.com/ipswebsitedatabase',
+    #     conn_max_age=600
+    # )
+    # Databases['default'] = dj_database_url.config(
+    #     default = "postgresql://ipswebsitedatabase_asr4_user:2qmIPBbEaSXvbInnRG9WJMATnOKNxtll@dpg-cs59s1g8fa8c73aiscrg-a.oregon-postgres.render.com/ipswebsitedatabase_asr4",
+    #     conn_max_age=600,
+    #     conn_health_checks=True,
+    #     )
     'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://ipswebsitedatabase_user:jXFqm0OYY2C4J5e9bMo6dsfITXeRxr2N@dpg-cqv10dij1k6c73do6hl0-a.oregon-postgres.render.com/ipswebsitedatabase',
-        conn_max_age=600
+        default=os.getenv('DJ_DB_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
     )
 }
 
